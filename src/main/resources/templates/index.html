@@ -1,9 +1,19 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>Hola Mundo!</title>
-	</head>
-	<body>
-		<h1>Hola mundo desde eclipse springboot!</h1>
-	</body>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:text="${titulo}"></title>
+</head>
+<body>
+	<h1 th:text="${saludo}"></h1>
+
+	<div th:if="${show}">contenido del div</div>
+
+	<div th:if="${series != null}">
+		Mis series Favoritas
+		<ul>
+			<li th:each=" serie: ${series}" th:text="${serie}"></li>
+		</ul>
+	</div>
+
+</body>
 </html>
