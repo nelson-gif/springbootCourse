@@ -1,8 +1,9 @@
 package com.codigofacilito.projectCF.controllers;
 
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +12,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.codigofacilito.projectCF.models.Equipo;
 import com.codigofacilito.projectCF.models.Jugador;
+import com.codigofacilito.projectCF.services.IService;
 
 @Controller
 public class ParamController {
+	
+	@Autowired
+	@Qualifier("equiposEspania")
+	IService equipoService;
+
 	
 	@GetMapping("/parametros")
 	public String parametros(@RequestParam(defaultValue = "Valor por default") String valor,
@@ -31,7 +38,7 @@ public class ParamController {
 	
 	@GetMapping("/equipos/{nombre}/{numero}")
 	public String parametrosPorPath(@PathVariable String nombre, @PathVariable("numero") Integer numero, Model model) {
-		Optional<Equipo> equipoOptional = getEquipo().stream()
+		Optional<Equipo> equipoOptional = equipoService.getTodos().stream()
 													.filter(equipo -> 
 													nombre.toLowerCase()
 													.equals(equipo.getNombre().toLowerCase()))
@@ -49,24 +56,4 @@ public class ParamController {
 		return "parametros";
 	}
 	
-	private List<Equipo> getEquipo(){
-		Equipo barcelona = new Equipo();
-		barcelona.setNombre("Barcelona");
-		barcelona.addJugador(new Jugador("TER STEGEN", 1));
-		barcelona.addJugador(new Jugador("ARAUJO", 4));
-		barcelona.addJugador(new Jugador("BUSQUETS", 5));
-		barcelona.addJugador(new Jugador("LEWANDOSKI", 9));
-		barcelona.addJugador(new Jugador("DEMBELE", 7));
-		
-		Equipo realMadrid = new Equipo();
-		realMadrid.setNombre("RealMadrid");
-		realMadrid.addJugador(new Jugador("COURTOIS", 1));
-		realMadrid.addJugador(new Jugador("CARVAJAL", 2));
-		realMadrid.addJugador(new Jugador("MODRIC", 10));
-		realMadrid.addJugador(new Jugador("BENZEMA", 9));
-		realMadrid.addJugador(new Jugador("HAZARD", 7));
-		
-		
-		return List.of(barcelona, realMadrid);
-	}
 }
